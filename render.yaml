@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: whatsapp-guard
+    runtime: node
+    plan: starter            # דיסק קבוע + בלי שינה. בתוכנית החינמית הבוט לא יכול לרוץ 24/7
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: ACCESS_CODE
+        sync: false          # את הקוד מזינים בדשבורד של Render, לא בקובץ הזה
+      - key: SESSION_SECRET
+        generateValue: true
+    disk:
+      name: guard-data
+      mountPath: /var/data
+      sizeGB: 1
